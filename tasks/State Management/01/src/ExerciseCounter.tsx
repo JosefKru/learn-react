@@ -1,24 +1,24 @@
+import { useState } from "react";
+
 interface ExerciseCounterProps {
   exerciseName: string;
 }
 
 export function ExerciseCounter({ exerciseName }: ExerciseCounterProps) {
-  // TODO: Implement state management using useState hook
-  // The counter should:
-  // 1. Track count starting from 0
-  // 2. Provide increment functionality
-  // 3. Provide decrement functionality (not going below 0)
-  // 4. Provide reset functionality
-  
+  const [count, setCount] = useState(0)
+
+  const increment  = () => setCount(prev => prev += 1)
+  const decrement = () => setCount(prev => Math.max(prev - 1, 0))
+  const reset = () => setCount(0)
+
   return (
     <div className="exercise-counter">
       <h3>{exerciseName}</h3>
-      {/* TODO: Implement the counter UI with:
-          - Display for current count
-          - Increment button
-          - Decrement button (should be disabled when count is 0)
-          - Reset button
-      */}
+      <p>Кол-во упражнений:</p>
+      <p>{count}</p>
+      <button aria-label="Decrement" onClick={decrement}>Decrement</button>
+      <button aria-label="Increment" onClick={increment}>Increment</button>
+      <button aria-label="Reset" onClick={reset}>Reset</button>
     </div>
   );
 }
