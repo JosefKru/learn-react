@@ -4,7 +4,7 @@ export type NotificationCategory = 'news' | 'updates' | 'marketing' | 'security'
 
 export interface NotificationPreferencesForm {
   email: string;
-  frequency: NotificationFrequency;
+  frequency: NotificationFrequency[];
   time: string;
   categories: NotificationCategory[];
   maxNotifications: number;
