@@ -1,4 +1,4 @@
-import { TaskState, TaskAction, Task } from '../types/TaskManager';
+import { TaskState, TaskAction, Task } from "../types/TaskManager";
 
 // TODO: Implement the reducer function
 // 1. Handle ADD_TASK action
@@ -12,26 +12,36 @@ export const initialState: TaskState = {
   tasks: [],
   filters: {},
   sort: {
-    by: 'createdAt',
-    order: 'desc',
+    by: "createdAt",
+    order: "desc",
   },
 };
 
 export function taskReducer(state: TaskState, action: TaskAction): TaskState {
   switch (action.type) {
-    case 'ADD_TASK':
+    case "ADD_TASK":
+      return {
+        ...state,
+        tasks: [
+          ...state.tasks,
+          {
+            id: String(Math.random()),
+            createdAt: new Date(),
+            ...action.payload,
+          },
+        ],
+      };
+
+    case "UPDATE_TASK":
       return state; // TODO: Implement
 
-    case 'UPDATE_TASK':
+    case "DELETE_TASK":
       return state; // TODO: Implement
 
-    case 'DELETE_TASK':
+    case "SET_FILTER":
       return state; // TODO: Implement
 
-    case 'SET_FILTER':
-      return state; // TODO: Implement
-
-    case 'SET_SORT':
+    case "SET_SORT":
       return state; // TODO: Implement
 
     default:
