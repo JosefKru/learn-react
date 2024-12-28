@@ -26,11 +26,15 @@ export const TaskManager: React.FC<TaskManagerProps> = ({ initialTasks = [] }) =
     dispatch({ type: "ADD_TASK", payload: { title, description, priority, status: "todo" } });
   };
 
+  const updateTask = (id: string, updates: Partial<Task>) => {
+    dispatch({type: 'UPDATE_TASK', payload: {id, ...updates} })
+  }
+
   return (
     <div>
       <h2>Task Manager</h2>
       <TaskForm onAddTask={addTask} />
-      <TaskList tasks={state.tasks} />
+      <TaskList tasks={state.tasks} onUpdateTask={updateTask} />
       {/* TODO: Implement UI */}
     </div>
   );
