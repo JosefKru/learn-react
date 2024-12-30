@@ -43,9 +43,19 @@ export const TaskManager: React.FC<TaskManagerProps> = ({ initialTasks = [] }) =
     dispatch({ type: 'SET_SORT', payload: { by, order } })
   }, [])
 
+  const setFilter = useCallback(
+    (type: 'status' | 'priority', value: TaskStatus | TaskPriority | undefined) => {
+      dispatch({ type: 'SET_FILTER', payload: { type, value } })
+    },
+    []
+  )
+
   const filteredTasks = useMemo((): Task[] => {
-    const { tasks, sort } = state
-    const sortedTasks = tasks
+    const { tasks, sort, filters } = state
+    let sortedTasks = tasks
+
+    if (filters.status) sortedTasks = sortedTasks.filter((task) => task.status === filters.status)
+    if (filters.priority) sortedTasks = sortedTasks.filter((task) => task.priority === filters.priority)
 
     return sortedTasks.sort((a, b) => {
       if (sort.by === 'createdAt') {
@@ -73,8 +83,7 @@ export const TaskManager: React.FC<TaskManagerProps> = ({ initialTasks = [] }) =
         onUpdatePriority={updatePriority}
         onDeleteTask={deleteTask}
       />
-      <Filter onSort={setSort} />
-      {/* TODO: Implement UI */}
+      <Filter onSort={setSort} onFilter={setFilter} filters={state.filters} />
     </div>
   )
 }

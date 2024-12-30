@@ -47,7 +47,13 @@ export function taskReducer(state: TaskState, action: TaskAction): TaskState {
       }
 
     case 'SET_FILTER':
-      return state // TODO: Implement
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [action.payload.type]: action.payload.value,
+        },
+      }
 
     case 'SET_SORT':
       return {

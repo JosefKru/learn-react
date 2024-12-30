@@ -21,7 +21,7 @@ const getTaskStyle = (status: TaskStatus) => {
   }
 }
 
-const priority: TaskPriority[] = ['low', 'medium', 'high']
+export const priorityArr: TaskPriority[] = ['low', 'medium', 'high']
 
 export const TaskList: React.FC<TaskListProps> = ({
   tasks,
@@ -42,7 +42,7 @@ export const TaskList: React.FC<TaskListProps> = ({
               value={task.priority}
               onChange={(e) => onUpdatePriority(task.id, e.target.value as TaskPriority)}
             >
-              {priority.map((p) => (
+              {priorityArr.map((p) => (
                 <option key={p} value={p}>
                   {p}
                 </option>

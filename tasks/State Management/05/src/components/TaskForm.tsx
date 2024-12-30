@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TaskPriority } from '../types/TaskManager'
+import { priorityArr } from './TaskList'
 
 interface TaskFormProps {
   onAddTask: (title: string, description: string, priority: TaskPriority) => void
@@ -28,9 +29,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
         required
       />
       <select value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
-        <option value='low'>Low</option>
-        <option value='medium'>Medium</option>
-        <option value='high'>High</option>
+        {priorityArr.map(p => <option key={p} value={p}>{p}</option>)}
       </select>
       <button type='submit'>Add Task</button>
     </form>
