@@ -33,15 +33,14 @@ export const TaskList: React.FC<TaskListProps> = ({
     <div className='container-task-list'>
       {tasks.map((task) => (
         <div className='task' style={getTaskStyle(task.status)} key={task.id}>
-          <h2>{task.title}</h2>
+          <h3>{task.title}</h3>
           <p>{task.description}</p>
           <p>Status: {task.status}</p>
           <div>
             <span>Priority: </span>
             <select
-              onChange={(e) =>
-                onUpdatePriority(task.id, e.target.value as TaskPriority)
-              }
+              value={task.priority}
+              onChange={(e) => onUpdatePriority(task.id, e.target.value as TaskPriority)}
             >
               {priority.map((p) => (
                 <option key={p} value={p}>
@@ -49,16 +48,11 @@ export const TaskList: React.FC<TaskListProps> = ({
                 </option>
               ))}
             </select>
+            <p>Date: {task.createdAt.toISOString()}</p>
           </div>
           <div>
-            <button
-              onClick={() => onUpdateTask(task.id, { status: 'in-progress' })}
-            >
-              Start
-            </button>
-            <button onClick={() => onUpdateTask(task.id, { status: 'done' })}>
-              Done
-            </button>
+            <button onClick={() => onUpdateTask(task.id, { status: 'in-progress' })}>Start</button>
+            <button onClick={() => onUpdateTask(task.id, { status: 'done' })}>Done</button>
             <button onClick={() => onDeleteTask(task.id)}>Delete</button>
           </div>
         </div>

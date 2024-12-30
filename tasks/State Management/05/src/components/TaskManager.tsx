@@ -1,17 +1,11 @@
 import React, { useReducer, useCallback, useMemo } from 'react'
-import {
-  TaskManagerProps,
-  Task,
-  TaskStatus,
-  TaskPriority,
-} from '../types/TaskManager'
+import { TaskManagerProps, Task, TaskStatus, TaskPriority, TaskState } from '../types/TaskManager'
 import { taskReducer, initialState } from '../reducers/taskReducer'
 import { TaskForm } from './TaskForm'
 import { TaskList } from './TaskList'
+import { Filter } from './Filter'
 
-export const TaskManager: React.FC<TaskManagerProps> = ({
-  initialTasks = [],
-}) => {
+export const TaskManager: React.FC<TaskManagerProps> = ({ initialTasks = [] }) => {
   // TODO: Implement the component
   // 1. Initialize useReducer with taskReducer and initial state
   // 2. Create handlers for all actions
@@ -29,39 +23,57 @@ export const TaskManager: React.FC<TaskManagerProps> = ({
     tasks: initialTasks,
   })
 
-  const addTask = (
-    title: string,
-    description: string,
-    priority: TaskPriority
-  ) => {
-    dispatch({
-      type: 'ADD_TASK',
-      payload: { title, description, priority, status: 'todo' },
-    })
-  }
+  const addTask = useCallback((title: string, description: string, priority: TaskPriority) => {
+    dispatch({ type: 'ADD_TASK', payload: { title, description, priority, status: 'todo' } })
+  }, [])
 
-  const updateTask = (id: string, updates: Partial<Task>) => {
+  const updateTask = useCallback((id: string, updates: Partial<Task>) => {
     dispatch({ type: 'UPDATE_TASK', payload: { id, ...updates } })
-  }
+  }, [])
 
-  const updatePriority = (id: string, priority: TaskPriority) => {
+  const updatePriority = useCallback((id: string, priority: TaskPriority) => {
     dispatch({ type: 'UPDATE_TASK', payload: { id, priority } })
-  }
+  }, [])
 
-  const deleteTask = (id: string) => {
+  const deleteTask = useCallback((id: string) => {
     dispatch({ type: 'DELETE_TASK', payload: { id } })
-  }
+  }, [])
+
+  const setSort = useCallback((by: 'createdAt' | 'priority', order: 'asc' | 'desc') => {
+    dispatch({ type: 'SET_SORT', payload: { by, order } })
+  }, [])
+
+  const filteredTasks = useMemo((): Task[] => {
+    const { tasks, sort } = state
+    const sortedTasks = tasks
+
+    return sortedTasks.sort((a, b) => {
+      if (sort.by === 'createdAt') {
+        return sort.order === 'asc' ? +a.createdAt - +b.createdAt : +b.createdAt - +a.createdAt
+      } else {
+        const priority = {
+          low: 1,
+          medium: 2,
+          high: 3,
+        }
+        return sort.order === 'asc'
+          ? priority[a.priority] - priority[b.priority]
+          : priority[b.priority] - priority[a.priority]
+      }
+    })
+  }, [state])
 
   return (
-    <div>
+    <div className='main-container'>
       <h2>Task Manager</h2>
       <TaskForm onAddTask={addTask} />
       <TaskList
-        tasks={state.tasks}
+        tasks={filteredTasks}
         onUpdateTask={updateTask}
         onUpdatePriority={updatePriority}
         onDeleteTask={deleteTask}
       />
+      <Filter onSort={setSort} />
       {/* TODO: Implement UI */}
     </div>
   )

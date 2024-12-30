@@ -36,9 +36,7 @@ export function taskReducer(state: TaskState, action: TaskAction): TaskState {
       return {
         ...state,
         tasks: state.tasks.map((task) => {
-          return task.id === action.payload.id
-            ? { ...task, ...action.payload }
-            : task
+          return task.id === action.payload.id ? { ...task, ...action.payload } : task
         }),
       }
 
@@ -52,7 +50,13 @@ export function taskReducer(state: TaskState, action: TaskAction): TaskState {
       return state // TODO: Implement
 
     case 'SET_SORT':
-      return state // TODO: Implement
+      return {
+        ...state,
+        sort: {
+          by: action.payload.by,
+          order: action.payload.order,
+        },
+      }
 
     default:
       return state
