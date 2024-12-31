@@ -77,12 +77,17 @@ export const TaskManager: React.FC<TaskManagerProps> = ({ initialTasks = [] }) =
     <div className='main-container'>
       <h2>Task Manager</h2>
       <TaskForm onAddTask={addTask} />
-      <TaskList
-        tasks={filteredTasks}
-        onUpdateTask={updateTask}
-        onUpdatePriority={updatePriority}
-        onDeleteTask={deleteTask}
-      />
+      {state.tasks.length === 0 ? (
+        <p>Нет задач</p>
+      ) : (
+        <TaskList
+          tasks={filteredTasks}
+          onUpdateTask={updateTask}
+          onUpdatePriority={updatePriority}
+          onDeleteTask={deleteTask}
+        />
+      )}
+
       <Filter onSort={setSort} onFilter={setFilter} filters={state.filters} />
     </div>
   )

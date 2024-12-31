@@ -34,7 +34,7 @@ export const TaskList: React.FC<TaskListProps> = ({
       {tasks.map((task) => (
         <div className='task' style={getTaskStyle(task.status)} key={task.id}>
           <h3>{task.title}</h3>
-          <p>{task.description}</p>
+          <p data-testid='task-list-desc'>{task.description}</p>
           <p>Status: {task.status}</p>
           <div>
             <span>Priority: </span>
